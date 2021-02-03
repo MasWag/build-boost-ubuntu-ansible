@@ -1,6 +1,8 @@
 name: Bionic
 
-on: [push]
+on:
+  push:
+    paths: 'build_boost_bionic.yaml'
 
 jobs:
   build:

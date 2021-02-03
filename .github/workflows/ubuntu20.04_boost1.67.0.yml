@@ -1,6 +1,8 @@
 name: Focal
 
-on: [push]
+on:
+  push:
+    paths: 'build_boost_focal.yaml'
 
 jobs:
   build:
