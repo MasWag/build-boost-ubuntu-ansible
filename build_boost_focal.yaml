@@ -1,0 +1,46 @@
+# Build-Boost Focal
+#
+# Copyright (c) 2021 Masaki Waga
+#
+# This file is released under the MIT License.
+# http://opensource.org/licenses/mit-license.php
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Install required packages
+      apt:
+        pkg:
+          - software-properties-common
+          - g++ 
+          - gcc 
+          - git 
+          - wget
+          - git
+          - build-essential 
+          - python-dev 
+          - autotools-dev 
+          - libicu-dev
+          - libbz2-dev
+      become: yes
+
+    - name: clone boost
+      git:
+        repo: 'https://github.com/boostorg/boost.git'
+        dest: /home/ubuntu/boost
+        version: boost-1.67.0
+      register: boost_git_result
+
+    - name: configure boost
+      command: chdir=/home/ubuntu/boost ./bootstrap.sh
+      when: boost_git_result.before != boost_git_result.after
+
+    - name: build boost
+      command: chdir=/home/ubuntu/boost ./b2 --prefix=/usr/local -j5
+      when: boost_git_result.before != boost_git_result.after
+
+    - name: install boost
+      command: chdir=/home/ubuntu/boost ./b2 install --prefix=/usr/local -j5
+      when: boost_git_result.before != boost_git_result.after
+      become: yes

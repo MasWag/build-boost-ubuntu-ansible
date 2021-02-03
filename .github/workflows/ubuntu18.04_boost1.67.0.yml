@@ -19,4 +19,4 @@ jobs:
         apt-add-repository --yes --update ppa:ansible/ansible
         apt-get install ansible python-apt -y
     - name: run ansible
-      run : ansible-playbook ./build_boost.yaml
+      run : ansible-playbook ./build_boost_bionic.yaml
